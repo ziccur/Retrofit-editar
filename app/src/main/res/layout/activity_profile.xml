@@ -1,117 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
+    <!-- Capçalera amb nom d'usuari -->
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/worksans"
         android:text="/@PauSintes69"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:fontFamily="@font/worksans"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <LinearLayout
+    <!-- Contingut principal -->
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cardMain"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#2B2B2B"
-        android:orientation="vertical"
         android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tvUsername"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/navButtons"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/navButtons">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUsername">
 
         <TextView
             android:id="@+id/tvBicisValorades"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/worksans"
             android:text="Bicis valorades: 10"
             android:textColor="@color/white"
-            android:fontFamily="@font/worksans"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tvDataCreacio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/worksans"
             android:text="Data creació: 22/10/2024"
             android:textColor="@color/white"
-            android:fontFamily="@font/worksans"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/tvBicisValorades"/>
 
         <TextView
             android:id="@+id/tvUltimaActivitat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/worksans"
             android:text="Última activitat: 23/10/2024 19:19"
             android:textColor="@color/white"
-            android:fontFamily="@font/worksans"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/tvDataCreacio"/>
 
-        <!-- Lista de bicis valoradas con RecyclerView -->
+        <!-- Llista de bicis -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvBicisValorades"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="16dp"
-            android:scrollbars="vertical" />
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUltimaActivitat"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Navegación inferior -->
-    <LinearLayout
-        android:id="@+id/navButtons"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="#535353"
-        android:gravity="center"
-        android:orientation="horizontal"
+    <!-- Botó de gràfics -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGraficos"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Gràfics"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
-        <ImageView
-            android:id="@+id/btnSettings"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="Settings"
-            android:src="@drawable/settings"
-            android:clickable="true"
-            android:focusable="true"/>
-
-        <ImageView
-            android:id="@+id/btnQR"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="QR Code"
-            android:src="@drawable/qr_code"
-            android:clickable="true"
-            android:focusable="true"/>
-
-        <ImageView
-            android:id="@+id/btnProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="Profile"
-            android:src="@drawable/user"
-            android:clickable="true"
-            android:focusable="true"/>
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
