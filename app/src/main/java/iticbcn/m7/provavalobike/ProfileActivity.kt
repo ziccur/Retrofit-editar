@@ -2,82 +2,95 @@ package iticbcn.m7.provavalobike
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class ProfileActivity : AppCompatActivity(), BiciAdapter.OnBiciUpdatedListener {
+class ProfileActivity : AppCompatActivity(), BiciAdapter.OnBiciActualitzadaListener {
 
-    private lateinit var rvBicisValorades: RecyclerView
+    private lateinit var rvBicisValorades: androidx.recyclerview.widget.RecyclerView
     private lateinit var biciAdapter: BiciAdapter
-    private var listaBicis = mutableListOf<Bici>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
-        setupNavigation()
-
-        rvBicisValorades = findViewById(R.id.rvBicisValorades)
-        rvBicisValorades.layoutManager = LinearLayoutManager(this)
-
-        biciAdapter = BiciAdapter(this, listaBicis, this) // Pasa 'this' como listener
-        rvBicisValorades.adapter = biciAdapter
-
-        cargarBicisDesdeAPI()
+        configurarNavegacio()
+        configurarRecyclerView()
+        carregarDades()
     }
 
-    override fun onBiciUpdated() {
-        cargarBicisDesdeAPI() // Recargar la lista de bicicletas cuando se notifique una actualización
-    }
-
-    private fun setupNavigation() {
+    private fun configurarNavegacio() {
+        val btnGraficos = findViewById<Button>(R.id.btnGraficos)
+        btnGraficos.setOnClickListener {
+            startActivity(Intent(this, GraficosActivity::class.java))
+        }
         val btnSettings = findViewById<ImageView>(R.id.btnSettings)
         val btnQR = findViewById<ImageView>(R.id.btnQR)
         val btnProfile = findViewById<ImageView>(R.id.btnProfile)
 
-        btnSettings?.setOnClickListener {
-            val intent = Intent(this, SettingsActivity::class.java)
-            startActivity(intent)
+
+        btnSettings.setOnClickListener {
+            navegarASettings()
         }
 
-        btnQR?.setOnClickListener {
-            val intent = Intent(this, EscaneixActivity::class.java)
-            startActivity(intent)
+        btnQR.setOnClickListener {
+            navegarAQR()
         }
 
-        btnProfile?.setOnClickListener {
-            val intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+        btnProfile.setOnClickListener {
+            navegarAPerfil()
         }
     }
 
-    private fun cargarBicisDesdeAPI() {
+    private fun configurarRecyclerView() {
+        rvBicisValorades = findViewById(R.id.rvBicisValorades)
+        rvBicisValorades.layoutManager = LinearLayoutManager(this)
+        biciAdapter = BiciAdapter(this, mutableListOf(), this)
+        rvBicisValorades.adapter = biciAdapter
+    }
+
+    private fun carregarDades() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitClient.instance.getBicisValorades()
-                withContext(Dispatchers.Main) {
-                    Log.d("ProfileActivity", "Datos recibidos: $response")
-                    listaBicis.clear()
-                    listaBicis.addAll(response)
-                    biciAdapter.notifyDataSetChanged()
+                val bicis = RetrofitClient.instance.getBicisValorades()
+                runOnUiThread {
+                    biciAdapter.actualitzarLlista(bicis)
                 }
             } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
+                runOnUiThread {
                     Toast.makeText(
                         this@ProfileActivity,
-                        "Error al cargar bicis: ${e.message}",
+                        "Error carregant dades: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
         }
+    }
+
+    override fun onBiciActualitzada() {
+        carregarDades()
+    }
+
+    private fun navegarAGraficos() {
+        startActivity(Intent(this, GraficosActivity::class.java))
+    }
+
+    private fun navegarASettings() {
+        startActivity(Intent(this, SettingsActivity::class.java))
+    }
+
+    private fun navegarAQR() {
+        startActivity(Intent(this, EscaneixActivity::class.java))
+    }
+
+    private fun navegarAPerfil() {
+        startActivity(Intent(this, ProfileActivity::class.java))
     }
 }
