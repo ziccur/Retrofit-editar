@@ -20,7 +20,7 @@ data class Bici(
     var id: Int,
     var matricula: String,
     var puntuacio: Int,
-    var comentari: String,  // Traduït a català
+    var comentari: String,
     var data: String,
     var idUsuari: Int
 )
@@ -55,7 +55,6 @@ class BiciAdapter(
 
     override fun getItemCount(): Int = llistaBicis.size
 
-    // Mètode per actualitzar la llista
     fun actualitzarLlista(novaLlista: List<Bici>) {
         llistaBicis.clear()
         llistaBicis.addAll(novaLlista)
@@ -120,7 +119,6 @@ class BiciAdapter(
                 )
                 withContext(Dispatchers.Main) {
                     if (resposta.isSuccessful) {
-                        Toast.makeText(context, "Actualitzat", Toast.LENGTH_SHORT).show()
                         listener.onBiciActualitzada()
                     }
                 }
@@ -135,7 +133,7 @@ class BiciAdapter(
     data class UpdateBiciRequest(
         val matricula: String,
         val puntuacio: Int,
-        val comentario: String,  // Manté el nom original per compatibilitat amb l'API
+        val comentario: String,
         val data: String,
         val idUsuari: Int
     )
