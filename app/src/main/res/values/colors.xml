@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores básicos -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="background_dark">#272727</color>
+    <color name="material_dynamic_primary0">#6200EA</color>
+    <color name="button_red">#D32F2F</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="star_selected">#FFD700</color>
+    <color name="star_unselected">#808080</color>
+    <color name="active_tab_color">#4CAF50</color>
+    <color name="red">#FF0000</color> <!-- Rojo -->
+    <color name="blue">#0000FF</color> <!-- Azul -->
+
+</resources>
