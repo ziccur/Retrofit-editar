@@ -1,4 +1,3 @@
-// GraficosActivity.kt
 package iticbcn.m7.provavalobike
 
 import android.graphics.Color
@@ -43,8 +42,6 @@ class GraficosActivity : AppCompatActivity() {
             it.description.isEnabled = false
             it.setTouchEnabled(true)
         }
-
-        // Mejoras adicionales BarChart
         barChart.setDrawBarShadow(false)
         barChart.setDrawValueAboveBar(true)
     }
@@ -72,7 +69,6 @@ class GraficosActivity : AppCompatActivity() {
     private fun configurarBarChart(bicis: List<Bici>) {
         val grups = bicis.groupBy { it.matricula }
         matriculas = grups.keys.toMutableList()
-
         val entries = grups.values.mapIndexed { index, lista ->
             BarEntry(index.toFloat(), lista.map { it.puntuacio }.average().toFloat())
         }
@@ -85,34 +81,28 @@ class GraficosActivity : AppCompatActivity() {
         }
 
         barChart.apply {
-            data = BarData(dataSet).apply {
-                barWidth = 0.4f
-            }
-
+            data = BarData(dataSet).apply { barWidth = 0.4f }
             xAxis.apply {
                 position = XAxis.XAxisPosition.BOTTOM
                 valueFormatter = object : ValueFormatter() {
-                    override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                        return matriculas.getOrNull(value.toInt())?.takeLast(4) ?: "" // Mostrar últimos 4 dígitos
-                    }
+                    override fun getAxisLabel(value: Float, axis: AxisBase?) =
+                        matriculas.getOrNull(value.toInt())?.takeLast(4) ?: ""
                 }
                 granularity = 1f
                 setDrawGridLines(false)
                 textColor = Color.DKGRAY
-                labelRotationAngle = -90f // Rotación vertical
+                labelRotationAngle = -90f
                 setLabelCount(matriculas.size, true)
                 setAvoidFirstLastClipping(true)
             }
-
             axisLeft.apply {
                 textColor = Color.DKGRAY
                 axisMinimum = 0f
                 granularity = 1f
             }
-
             axisRight.isEnabled = false
             legend.isEnabled = false
-            setExtraOffsets(10f, 0f, 10f, 30f) // Margen para etiquetas
+            setExtraOffsets(10f, 0f, 10f, 30f)
             setPinchZoom(false)
             setVisibleXRangeMaximum(matriculas.size.toFloat())
             animateY(800)
@@ -123,7 +113,10 @@ class GraficosActivity : AppCompatActivity() {
     private fun configurarPieChart(bicis: List<Bici>) {
         val comptatge = bicis.groupingBy { it.puntuacio }.eachCount()
         val total = comptatge.values.sum().toFloat()
-        val entries = comptatge.map { PieEntry(it.value.toFloat(), "${it.key} ⭐") }
+        val entries = comptatge.map {
+            val percent = (it.value / total) * 100
+            PieEntry(it.value.toFloat(), "${it.key} ⭐ (${"%.1f".format(percent)}%)")
+        }
 
         val dataSet = PieDataSet(entries, "").apply {
             colors = customColors
@@ -133,15 +126,8 @@ class GraficosActivity : AppCompatActivity() {
         }
 
         pieChart.apply {
-            data = PieData(dataSet).apply {
-                setValueFormatter(object : ValueFormatter() {
-                    override fun getFormattedValue(value: Float): String {
-                        return "%.1f%%".format((value / total) * 100) // Mostrar porcentajes
-                    }
-                })
-            }
-
-            setUsePercentValues(true)
+            data = PieData(dataSet)
+            setUsePercentValues(false)
             centerText = "Distribució\nPuntuacions"
             setCenterTextSize(14f)
             setCenterTextColor(Color.DKGRAY)
