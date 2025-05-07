@@ -16,7 +16,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // Mejora: Configuración específica para CameraX
+        // Config personalitzada
         buildConfigField("String", "BASE_API_URL", "\"https://tu-api.com/\"")
     }
 
@@ -75,15 +75,17 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
-    // Lifecycle Components
+    // Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-
+    // Gràfics
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    // ✅ TESTING (UNIT I INSTRUMENTATS)
+    testImplementation("junit:junit:4.13.2") // Tests unitaris
+    androidTestImplementation("androidx.test.ext:junit:1.1.5") // Tests instrumentats
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation(kotlin("test"))
 }
