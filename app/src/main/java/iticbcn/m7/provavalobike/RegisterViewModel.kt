@@ -19,34 +19,65 @@ class RegisterViewModel : ViewModel() {
     val confirmPasswordError: LiveData<String?> = _confirmPasswordError
 
     fun validate(username: String, email: String, password: String, confirmPassword: String): Boolean {
+        _usernameError.value = null
+        _emailError.value = null
+        _passwordError.value = null
+        _confirmPasswordError.value = null
+
         var isValid = true
 
-        if (username.isBlank()) {
-            _usernameError.value = "El camp no pot estar buit"
-            isValid = false
-        } else {
-            _usernameError.value = null
+        when {
+            username.isEmpty() -> {
+                _usernameError.value = "El camp no pot estar buit"
+                isValid = false
+            }
+            username.length < 3 -> {
+                _usernameError.value = "Mínim 3 caràcters"
+                isValid = false
+            }
+            username.length > 20 -> {
+                _usernameError.value = "Màxim 20 caràcters"
+                isValid = false
+            }
+            !username.matches(Regex("^[a-zA-Z0-9_]+$")) -> {
+                _usernameError.value = "Només lletres, números i guions baixos"
+                isValid = false
+            }
         }
 
-        if (email.isBlank()) {
-            _emailError.value = "Correu obligatori"
-            isValid = false
-        } else {
-            _emailError.value = null
+        when {
+            email.isEmpty() -> {
+                _emailError.value = "Correu obligatori"
+                isValid = false
+            }
+            !email.matches(Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) -> {
+                _emailError.value = "Format de correu invàlid"
+                isValid = false
+            }
         }
 
-        if (password.isBlank()) {
-            _passwordError.value = "Contrasenya obligatòria"
-            isValid = false
-        } else {
-            _passwordError.value = null
+        when {
+            password.isEmpty() -> {
+                _passwordError.value = "Contrasenya obligatòria"
+                isValid = false
+            }
+            password.length < 6 -> {
+                _passwordError.value = "Mínim 6 caràcters"
+                isValid = false
+            }
+            !password.matches(Regex(".*[A-Z].*")) -> {
+                _passwordError.value = "Inclou almenys una majúscula"
+                isValid = false
+            }
+            !password.matches(Regex(".*[a-z].*")) -> {
+                _passwordError.value = "Inclou almenys una minúscula"
+                isValid = false
+            }
         }
 
         if (password != confirmPassword) {
             _confirmPasswordError.value = "Les contrasenyes no coincideixen"
             isValid = false
-        } else {
-            _confirmPasswordError.value = null
         }
 
         return isValid

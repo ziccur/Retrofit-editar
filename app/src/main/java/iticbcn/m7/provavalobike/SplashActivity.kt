@@ -10,7 +10,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, EscaneixActivity::class.java))
+            startActivity(Intent(this, RegisterActivity::class.java))
             finish()
         }, 2000)
     }

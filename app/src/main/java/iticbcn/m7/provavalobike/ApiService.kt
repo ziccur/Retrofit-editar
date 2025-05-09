@@ -23,5 +23,5 @@ interface ApiService {
     suspend fun actualizarBici(
         @Path("id") id: Int,
         @Body requestBody: UpdateBiciRequest
-    ): Response<Unit> // O el tipo de respuesta que devuelva tu API
+    ): Response<Unit>
 }

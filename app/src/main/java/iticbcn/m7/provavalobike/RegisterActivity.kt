@@ -1,7 +1,6 @@
 package iticbcn.m7.provavalobike
 
 import android.content.Intent
-import android.opengl.ETC1.isValid
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
